@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+  </head>
+  <body>
+    <h1>Whatsapp</h1>
+
+    <div>
+      <input type="text" id="userInput" placeholder="Enter your message" />
+      <button id="messageBtn">Send Message</button>
+      <ul id="allMessage"></ul>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const btn = document.getElementById("messageBtn");
+      const messageInput = document.getElementById("userInput");
+      const view = document.getElementById("allMessage");
+
+      socket.on("active-broadcast", (message) => {
+        const li = document.createElement("li");
+        li.innerHTML = message;
+        view.append(li);
+      });
+
+      btn.addEventListener("click", function (e) {
+        const message = messageInput.value;
+        socket.emit("broadcast", message);
+      });
+    </script>
+  </body>
+</html>
